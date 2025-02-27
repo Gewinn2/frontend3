@@ -1,0 +1,146 @@
+basePath: /
+definitions:
+  main.CreateProductRequest:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/main.ProductWithoutId'
+        type: array
+    type: object
+  main.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  main.Message:
+    properties:
+      message:
+        type: string
+    type: object
+  main.Product:
+    properties:
+      category:
+        items:
+          type: string
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  main.ProductWithoutId:
+    properties:
+      category:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+info:
+  contact: {}
+  title: MEOW
+  version: "1.0"
+paths:
+  /product:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные товаров
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/main.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/main.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.Error'
+      summary: Создание товаров
+      tags:
+      - product
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные товара
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/main.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/main.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.Error'
+      summary: Обновление товара
+      tags:
+      - product
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id товара
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/main.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/main.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/main.Error'
+      summary: Удаление товара
+      tags:
+      - product
+swagger: "2.0"
