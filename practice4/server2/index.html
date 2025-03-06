@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Каталог товаров и Мессенджер</title>
+    <title>Мессенджер админа</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -86,7 +86,7 @@
 <script>
 
     // WebSocket
-    let userId = prompt("Введите ваш ID (например, 1, 2, 3 или 'admin' для администратора):", "1");
+    let userId = prompt("Введите 'admin' для администратора):", "1");
     if (!userId) userId = "гость";
 
     const socket = new WebSocket(`http://localhost:10003/ws?id=${userId}`);

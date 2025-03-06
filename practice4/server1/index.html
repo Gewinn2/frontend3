@@ -69,6 +69,9 @@
             border-radius: 5px;
             margin-left: 5px;
         }
+        .details {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -99,6 +102,7 @@
                         GetAllProducts {
                             name
                             price
+                            category
                         }
                     }
                 `
@@ -111,22 +115,34 @@
         const list = document.getElementById('product-list');
         list.innerHTML = '';
 
-        products.forEach(product => {
+        products.forEach((product, index) => {
             const item = document.createElement('div');
             item.classList.add('product');
             item.innerHTML = `
-                <div class="name">${product.name}</div>
-                <div class="price">${product.price.toFixed(2)} ₽</div>
-            `;
+        <div class="name">${product.name}</div>
+        <div class="price">${product.price.toFixed(2)} ₽</div>
+        <button class="toggle-btn" onclick="toggleDetails(${index})">Развернуть</button>
+        <div class="details" id="details-${index}">
+            <div>Категория: ${product.category}</div>
+        </div>
+    `;
             list.appendChild(item);
         });
     }
 
     loadProducts();
 
+    function toggleDetails(index) {
+        const details = document.getElementById(`details-${index}`);
+        if (details.style.display === "none" || details.style.display === "") {
+            details.style.display = "block";
+        } else {
+            details.style.display = "none";
+        }
+    }
 
     // WebSocket
-    let userId = prompt("Введите ваш ID (например, 1, 2, 3 или 'admin' для администратора):", "1");
+    let userId = prompt("Введите ваш ID (например, 1, 2, 3):", "1");
     if (!userId) userId = "гость";
 
     const socket = new WebSocket(`http://localhost:10003/ws?id=${userId}`);
