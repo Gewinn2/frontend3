@@ -73,9 +73,6 @@
 </head>
 <body>
 <div class="container">
-    <h2>Каталог товаров</h2>
-    <div id="product-list"></div>
-
     <h2>Мессенджер</h2>
     <div class="chat-container">
         <div class="messages" id="messages"></div>
@@ -87,43 +84,6 @@
 </div>
 
 <script>
-    async function loadProducts() {
-        const response = await fetch('http://localhost:10001/query', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                query: `
-                    query GetAllProducts {
-                        GetAllProducts {
-                            name
-                            price
-                        }
-                    }
-                `
-            })
-        });
-
-        const result = await response.json();
-        const products = result.data.GetAllProducts; // Извлекаем массив из GraphQL-ответа
-
-        const list = document.getElementById('product-list');
-        list.innerHTML = '';
-
-        products.forEach(product => {
-            const item = document.createElement('div');
-            item.classList.add('product');
-            item.innerHTML = `
-                <div class="name">${product.name}</div>
-                <div class="price">${product.price.toFixed(2)} ₽</div>
-            `;
-            list.appendChild(item);
-        });
-    }
-
-    loadProducts();
-
 
     // WebSocket
     let userId = prompt("Введите ваш ID (например, 1, 2, 3 или 'admin' для администратора):", "1");
