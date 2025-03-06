@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог товаров</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .product {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .product:last-child {
+            border-bottom: none;
+        }
+        .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .price {
+            color: green;
+        }
+        .category {
+            font-size: 14px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Каталог товаров</h2>
+    <div id="product-list"></div>
+</div>
+<script>
+    async function loadProducts() {
+        const response = await fetch('http://localhost:10001/query', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                query: `
+                    query GetAllProducts {
+                        GetAllProducts {
+                            name
+                            price
+                        }
+                    }
+                `
+            })
+        });
+
+        const result = await response.json();
+        const products = result.data.GetAllProducts; // Извлекаем массив из GraphQL-ответа
+
+        const list = document.getElementById('product-list');
+        list.innerHTML = '';
+
+        products.forEach(product => {
+            const item = document.createElement('div');
+            item.classList.add('product');
+            item.innerHTML = `
+                <div class="name">${product.name}</div>
+                <div class="price">${product.price.toFixed(2)} ₽</div>
+            `;
+            list.appendChild(item);
+        });
+    }
+
+    loadProducts();
+</script>
+</body>
+</html>

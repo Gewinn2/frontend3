@@ -13,7 +13,7 @@ func (h *Handler) InitRoutes() {
 	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendFile("index.html")
+		return c.SendFile("server2/index.html")
 	})
 	app.Get("/product", h.GetProducts)
 
