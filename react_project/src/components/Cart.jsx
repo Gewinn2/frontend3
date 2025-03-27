@@ -29,7 +29,7 @@ const Cart = () => {
               <ListItem>
                 <ListItemText
                   primary={item.title}
-                  secondary={`${item.quantity} x ${item.price}$`}
+                  secondary={`${item.quantity} x ${item.price}рублики`}
                 />
                 <Button onClick={() => dispatch(removeFromCart(item))}>
                   Удалить
@@ -38,7 +38,7 @@ const Cart = () => {
             </motion.div>
           ))}
         </List>
-        <Typography variant="h6">Общая стоимость: {total}$</Typography>
+        <Typography variant="h6">Общая стоимость: {total}рублики</Typography>
         <Button
           onClick={() => dispatch(clearCart())}
           variant="contained"
