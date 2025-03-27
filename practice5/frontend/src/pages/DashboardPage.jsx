@@ -13,16 +13,19 @@ import api from '../api';
 const DashboardPage = () => {
     const [userData, setUserData] = useState(null);
     const [error, setError] = useState('');
+    const [token, setToken] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const token = localStorage.getItem('token');
-                if (!token) {
+                const storedToken = localStorage.getItem('token');
+                if (!storedToken) {
                     navigate('/auth');
                     return;
                 }
+
+                setToken(storedToken); // сохраняем токен
 
                 const response = await api.get('/auth/check');
                 setUserData(response.data);
@@ -70,37 +73,20 @@ const DashboardPage = () => {
             }}
         >
             <Container maxWidth="md">
-                <Box sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    mb: 4,
-                    width: '100%'
-                }}>
-                    <Typography variant="h4">Добро пожаловать</Typography>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        onClick={handleLogout}
-                    >
+                <Paper elevation={3} sx={{ p: 4 }}>
+                    <Typography variant="h5" gutterBottom>
+                        Добро пожаловать!
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 2 }}>
+                        <strong>ID пользователя:</strong> {userData.id}
+                    </Typography>
+                    <Typography variant="body2" sx={{ wordBreak: 'break-all', mb: 2 }}>
+                        <strong>JWT токен:</strong> {token}
+                    </Typography>
+                    <Button variant="contained" color="primary" onClick={handleLogout}>
                         Выйти
                     </Button>
-                </Box>
-
-                <Paper elevation={3} sx={{ p: 4, width: '100%' }}>
-                    <Typography variant="h6" gutterBottom>
-                        Информация об аккаунте
-                    </Typography>
-                    <Typography>ID пользователя: {userData.id}</Typography>
-                    <Typography sx={{ mt: 2 }}>
-                        Вы успешно авторизованы!
-                    </Typography>
                 </Paper>
-
-                {error && (
-                    <Typography color="error" sx={{ mt: 2, textAlign: 'center' }}>
-                        {error}
-                    </Typography>
-                )}
             </Container>
         </Box>
     );
