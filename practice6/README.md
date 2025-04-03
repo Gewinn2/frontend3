@@ -3,6 +3,10 @@
 git clone https://github.com/Gewinn2/frontend3.git
 ```
 
+```
+cd practice6
+```
+
 ### Фронтенд
 Перейти в каталог frontend:
 ```
@@ -22,7 +26,7 @@ npm run dev
 ### Бэкенд
 Перейти в каталог frontend:
 ```
-cd backend
+cd ../backend
 ```
 
 **Установите зависимости:**

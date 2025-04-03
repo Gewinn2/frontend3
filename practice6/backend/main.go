@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"io/ioutil"
-	"log"
 	"os"
 	"path/filepath"
 	"time"
@@ -45,7 +44,6 @@ func main() {
 		AllowMethods:     "GET, HEAD, PUT, PATCH, POST, DELETE",
 	}))
 
-	// Session configuration
 	store = session.New(session.Config{
 		Storage:        storage,
 		Expiration:     24 * time.Hour,
@@ -54,12 +52,10 @@ func main() {
 		CookieHTTPOnly: true,
 	})
 
-	// Encryption key for cookies (32 bytes for AES-256)
 	app.Use(encryptcookie.New(encryptcookie.Config{
 		Key: "N8aW4XwBBAFvpEF1s4XrW9q4dRkq6JjYwJvK7iP5tbE=",
 	}))
 
-	// Routes
 	app.Post("/register", register)
 	app.Post("/login", login)
 	app.Get("/profile", authMiddleware, profile)
@@ -103,8 +99,6 @@ func register(c *fiber.Ctx) error {
 }
 
 func login(c *fiber.Ctx) error {
-	log.Println("Получен запрос на /data")
-
 	var creds User
 	if err := c.BodyParser(&creds); err != nil {
 		return c.SendStatus(fiber.StatusBadRequest)
@@ -167,15 +161,12 @@ func getData(c *fiber.Ctx) error {
 	cacheDir := "./cache"
 	cacheFile := filepath.Join(cacheDir, "data_cache.txt")
 
-	// Создаем директорию для кэша если не существует
 	if err := os.MkdirAll(cacheDir, 0755); err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString("Ошибка создания директории кэша")
 	}
 
-	// Пытаемся прочитать существующий файл кэша
 	fileInfo, err := os.Stat(cacheFile)
 	if err == nil {
-		// Проверяем время актуальности кэша
 		if time.Since(fileInfo.ModTime()) < time.Minute {
 			data, err := ioutil.ReadFile(cacheFile)
 			if err != nil {
@@ -188,17 +179,14 @@ func getData(c *fiber.Ctx) error {
 		}
 	}
 
-	// Генерируем новые данные
 	currentTime := time.Now().Format("2006-01-02 15:04:05")
 	newData := fmt.Sprintf("Данные созданы: %s", currentTime)
 
-	// Записываем в файл с обновленным временем
 	if err := ioutil.WriteFile(cacheFile, []byte(newData), 0644); err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString("Ошибка записи кэша")
 	}
 
-	// Устанавливаем время модификации файла
-	if err := os.Chtimes(cacheFile, time.Now(), time.Now()); err != nil {
+	if err = os.Chtimes(cacheFile, time.Now(), time.Now()); err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString("Ошибка обновления времени файла")
 	}
 
@@ -229,10 +217,8 @@ func cacheMiddleware(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusOK).Send(item.Data)
 	}
 
-	// Generate new data
 	err := c.Next()
 
-	// Save to cache
 	if c.Response().StatusCode() == fiber.StatusOK {
 		cacheDir := "./cache"
 		if err := os.MkdirAll(cacheDir, 0755); err != nil {
