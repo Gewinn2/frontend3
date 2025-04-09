@@ -7,13 +7,20 @@ function App() {
     const [inputText, setInputText] = useState('');
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     const [currentNoteId, setCurrentNoteId] = useState(null);
+    const [installPrompt, setInstallPrompt] = useState(null);
 
-    // Загрузка и сохранение заметок
+    // Загрузка заметок и настройка онлайн-статуса
     useEffect(() => {
         const savedNotes = localStorage.getItem('notes');
         if (savedNotes) setNotes(JSON.parse(savedNotes));
 
-        const handleStatusChange = () => setIsOnline(navigator.onLine);
+        const handleStatusChange = () => {
+            setIsOnline(navigator.onLine);
+            if (navigator.onLine) {
+                console.log('Back online, checking for updates...');
+            }
+        };
+
         window.addEventListener('online', handleStatusChange);
         window.addEventListener('offline', handleStatusChange);
 
@@ -23,11 +30,11 @@ function App() {
         };
     }, []);
 
+    // Сохранение заметок
     useEffect(() => {
         localStorage.setItem('notes', JSON.stringify(notes));
     }, [notes]);
 
-    // Обработчики действий
     const handleAddNote = () => {
         if (inputText.trim()) {
             setNotes([...notes, {
@@ -45,8 +52,7 @@ function App() {
                 note.id === currentNoteId
                     ? { ...note, text: inputText }
                     : note
-            )
-            );
+            ));
             setCurrentNoteId(null);
             setInputText('');
         }
@@ -67,11 +73,11 @@ function App() {
             {!isOnline && <div className="offline-banner">Офлайн-режим</div>}
 
             <div className="note-input">
-        <textarea
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Введите текст заметки..."
-        />
+                <textarea
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                    placeholder="Введите текст заметки..."
+                />
                 {currentNoteId ? (
                     <>
                         <button onClick={handleUpdateNote}>Обновить</button>

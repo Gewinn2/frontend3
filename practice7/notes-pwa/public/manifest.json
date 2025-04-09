@@ -1,20 +1,36 @@
 {
   "short_name": "Заметки",
-  "name": "PWA Заметки",
+  "name": "Офлайн Заметки",
+  "description": "Приложение для работы с заметками в офлайн-режиме",
   "icons": [
     {
-      "src": "logo192.png",
+      "src": "/icons/logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "/icons/logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "/",
+  "background_color": "#ffffff",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "scope": "/",
+  "theme_color": "#4CAF50",
+  "screenshots": [
+    {
+      "src": "/screenshots/screenshot1280x720.jpg",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshots/screenshot360x640.jpg",
+      "sizes": "360x640",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
 }
