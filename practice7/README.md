@@ -7,17 +7,11 @@ git clone https://github.com/Gewinn2/frontend3.git
 cd practice7
 ```
 
-Перейти в каталог frontend:
 ```
-cd notes-pwa
-```
-
-**Установите зависимости:**
-```
-npm install
+npm install --save-dev live-server
 ```
 
 **Запустите приложение:**
 ```
-npm start
+npx live-server
 ```

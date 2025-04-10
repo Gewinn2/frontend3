@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Офлайн Заметки</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4A90E2">
+    <link rel="icon" href="icons/logo-192.jpg">
+</head>
+<body>
+<div id="offline-alert" class="offline">Офлайн-режим</div>
+
+<div class="app-header">
+    <h1 class="app-title">Заметки от пса</h1>
+</div>
+
+<div class="container">
+    <div class="notes-container">
+        <div id="notes-list"></div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" id="title-input" placeholder="А здесь заголовок">
+        <textarea id="content-input" placeholder="А здесь текст"></textarea>
+        <button id="save-btn">Добавить</button>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
