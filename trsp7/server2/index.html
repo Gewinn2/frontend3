@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мессенджер админа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .product {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .product:last-child {
+            border-bottom: none;
+        }
+        .name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .price {
+            color: green;
+        }
+        .category {
+            font-size: 14px;
+            color: gray;
+        }
+        .chat-container {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #fff;
+        }
+        .messages {
+            height: 200px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .input-group {
+            display: flex;
+        }
+        .input-group input {
+            flex: 1;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .input-group button {
+            padding: 5px 10px;
+            border: none;
+            background: blue;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Мессенджер</h2>
+    <div class="chat-container">
+        <div class="messages" id="messages"></div>
+        <div class="input-group">
+            <input type="text" id="message-input" placeholder="Введите сообщение...">
+            <button onclick="sendMessage()">Отправить</button>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // WebSocket
+    let userId = prompt("Введите 'admin' для администратора):", "1");
+    if (!userId) userId = "гость";
+
+    const socket = new WebSocket(`http://localhost:10003/ws?id=${userId}`);
+
+    socket.onmessage = function(event) {
+        const messages = document.getElementById("messages");
+        const data = JSON.parse(event.data);
+
+        const message = document.createElement("div");
+        message.classList.add("message");
+        message.classList.add(data.sender.startsWith("пользователь") ? "user-message" : "admin-message");
+        message.innerHTML = `<strong>${data.sender}:</strong> ${data.message}`;
+
+        messages.appendChild(message);
+        messages.scrollTop = messages.scrollHeight;
+    };
+
+    function sendMessage() {
+        const input = document.getElementById("message-input");
+        if (input.value.trim() !== "") {
+            socket.send(input.value);
+            input.value = "";
+        }
+    }
+</script>
+</body>
+</html>

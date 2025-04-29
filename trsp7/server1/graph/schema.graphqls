@@ -1,0 +1,14 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+type Product {
+  id: ID!
+  name: String!
+  price: Float!
+  category: [String!]
+}
+
+type Query {
+  GetAllProducts: [Product!]!
+}

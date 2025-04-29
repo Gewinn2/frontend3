@@ -1,0 +1,198 @@
+basePath: /
+definitions:
+  internal.CreateProductRequest:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/internal.ProductWithoutId'
+        type: array
+    type: object
+  internal.Error:
+    properties:
+      error:
+        type: string
+    type: object
+  internal.Message:
+    properties:
+      message:
+        type: string
+    type: object
+  internal.Product:
+    properties:
+      category:
+        items:
+          type: string
+        type: array
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+  internal.ProductWithoutId:
+    properties:
+      category:
+        items:
+          type: string
+        type: array
+      name:
+        type: string
+      price:
+        type: number
+    type: object
+info:
+  contact: {}
+  title: MEOW
+  version: "1.0"
+paths:
+  /product:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные товаров
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/internal.CreateProductRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal.Error'
+      summary: Создание товаров
+      tags:
+      - product
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные товара
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/internal.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal.Error'
+      summary: Обновление товара
+      tags:
+      - product
+  /product/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id товара
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal.Error'
+      summary: Удаление товара
+      tags:
+      - product
+  /statham/img_url:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal.Error'
+      summary: Получение картинок
+      tags:
+      - statham
+  /statham/quotes:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/internal.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/internal.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/internal.Error'
+      summary: Получение цитат
+      tags:
+      - statham
+swagger: "2.0"
