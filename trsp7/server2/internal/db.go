@@ -33,6 +33,8 @@ func InitDataBase() (*sql.DB, error) {
 		log.Fatalf("Error initializing tables: %v", err)
 	}
 
+	createMocks(db)
+
 	return db, nil
 }
 
@@ -48,6 +50,88 @@ func InitTables(db *sql.DB) error {
 
 	_, err := db.Exec(createTableProducts)
 	return err
+}
+
+func createMocks(db *sql.DB) {
+	query := `SELECT COUNT(*) FROM products;`
+
+	count := 0
+	err := db.QueryRow(query).Scan(&count)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if count == 0 {
+		query = `INSERT INTO products(name, price, category) VALUES ($1, $2, $3)`
+		products := []Product{
+			{
+				Id:       1,
+				Name:     "Ноутбук Lenovo IdeaPad",
+				Price:    54999.99,
+				Category: []string{"Электроника", "Ноутбуки"},
+			},
+			{
+				Id:       2,
+				Name:     "Смартфон iPhone 15",
+				Price:    89999.99,
+				Category: []string{"Электроника", "Смартфоны"},
+			},
+			{
+				Id:       3,
+				Name:     "Наушники Sony WH-1000XM5",
+				Price:    29999.99,
+				Category: []string{"Электроника", "Аксессуары"},
+			},
+			{
+				Id:       4,
+				Name:     "Кофемашина De'Longhi",
+				Price:    45999.99,
+				Category: []string{"Бытовая техника", "Кухня"},
+			},
+			{
+				Id:       5,
+				Name:     "Фитнес-браслет Xiaomi Mi Band 7",
+				Price:    3999.99,
+				Category: []string{"Гаджеты", "Спорт"},
+			},
+			{
+				Id:       6,
+				Name:     "Книга 'Чистый код' Роберт Мартин",
+				Price:    2499.99,
+				Category: []string{"Книги", "Программирование"},
+			},
+			{
+				Id:       7,
+				Name:     "Игровая консоль PlayStation 5",
+				Price:    64999.99,
+				Category: []string{"Игры", "Консоли"},
+			},
+			{
+				Id:       8,
+				Name:     "Беспроводная мышь Logitech MX Master 3",
+				Price:    8999.99,
+				Category: []string{"Компьютеры", "Аксессуары"},
+			},
+			{
+				Id:       9,
+				Name:     "Умная колонка Яндекс Станция 2",
+				Price:    12999.99,
+				Category: []string{"Умный дом", "Аудио"},
+			},
+			{
+				Id:       10,
+				Name:     "Электросамокат Xiaomi Pro 2",
+				Price:    34999.99,
+				Category: []string{"Транспорт", "Гаджеты"},
+			},
+		}
+		for _, product := range products {
+			_, err = CreateProduct(db, product)
+			if err != nil {
+				log.Println(err)
+			}
+		}
+	}
+	log.Println("моки успешно созданы")
 }
 
 func CreateProduct(db *sql.DB, product Product) (int, error) {
