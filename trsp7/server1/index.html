@@ -1,103 +1,216 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Каталог товаров и Мессенджер</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 0;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .product {
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0;
-        }
-        .product:last-child {
-            border-bottom: none;
-        }
-        .name {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .price {
-            color: green;
-        }
-        .category {
-            font-size: 14px;
-            color: gray;
-        }
-        .chat-container {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background: #fff;
-        }
-        .messages {
-            height: 200px;
-            overflow-y: auto;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
-        }
-        .input-group {
-            display: flex;
-        }
-        .input-group input {
-            flex: 1;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .input-group button {
-            padding: 5px 10px;
-            border: none;
-            background: blue;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            margin-left: 5px;
-        }
-        .details {
-            display: none;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .image-container img {
+    width: 300px;  /* Фиксированная ширина */
+    height: auto;  /* Автоматическая высота для сохранения пропорций */
+    max-width: 100%; /* Не будет превышать ширину контейнера */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+  }
+      .product {
+        border-bottom: 1px solid #ddd;
+        padding: 15px 0;
+      }
+      .product:last-child {
+        border-bottom: none;
+      }
+      .name {
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .price {
+        color: green;
+      }
+      .category {
+        font-size: 14px;
+        color: gray;
+      }
+      .chat-container {
+        margin: 20px auto 0; /* Центрирование по горизонтали (auto) и отступ сверху 20px */
+    width: 70%; /* Занимает всю доступную ширину */
+    max-width: 800px; 
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: #f9f9f9;
+      }
+      .messages {
+        height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 3px;
+      }
+      .input-group {
+        display: flex;
+        gap: 10px;
+      }
+      .input-group input {
+        flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+      }
+      .input-group button {
+        padding: 8px 15px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+      }
+      .chat-title {
+    text-align: center; /* Выравнивание по левому краю */
+    margin-bottom: 15px; /* Отступ снизу */
+    font-size: 1.5em; /* Размер шрифта */
+    color: #333; /* Цвет текста */
+    font-weight: bold; /* Жирный шрифт */
+}
+      .details {
+        display: none;
+      }
     </style>
-</head>
-<body>
-<div class="container">
-    <h2>Каталог товаров</h2>
-    <div id="product-list"></div>
-
-    <h2>Мессенджер</h2>
-    <div class="chat-container">
+  </head>
+  <body>
+    <div class="container">
+      <h2>Каталог товаров</h2>
+      <div id="product-list"></div>
+      <div
+        class="quote-container"
+        style="margin: 20px 0; padding: 15px; border: 1px solid #ddd"
+      >
+        <button
+          style="
+            padding: 10px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            cursor: pointer;
+          "
+          onclick="getStathamQuote()"
+        >
+          Получить цитату
+        </button>
+        <button
+          style="
+            padding: 10px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            cursor: pointer;
+          "
+          onclick="getStathamImage()"
+        >
+          Получить картинку
+        </button>
+        
+        <div id="quote" style="margin-top: 10px"></div>
+        <!-- Контейнер для картинки -->
+        <div id="image-container" class="image-container"></div>
+      </div>
+        <div id="quote" style="margin-top: 10px"></div>
+      </div>
+      <h2 class="chat-title">Мессенджер</h2>
+      <div class="chat-container">
         <div class="messages" id="messages"></div>
         <div class="input-group">
-            <input type="text" id="message-input" placeholder="Введите сообщение...">
-            <button onclick="sendMessage()">Отправить</button>
+          <input
+            type="text"
+            id="message-input"
+            placeholder="Введите сообщение..."
+          />
+          <button onclick="sendMessage()">Отправить</button>
         </div>
+      </div>
     </div>
-</div>
 
-<script>
-    async function loadProducts() {
-        const response = await fetch('http://localhost:10001/query', {
-            method: 'POST',
+    <script>
+      async function getStathamQuote() {
+        try {
+          const response = await fetch(
+            "http://127.0.0.1:10002/statham/quotes",
+            {
+              method: "GET",
+              headers: {
+                accept: "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`Ошибка HTTP: ${response.status}`);
+          }
+          const data = await response.json();
+          document.getElementById("quote").textContent = data.message;
+        } catch (error) {
+          console.error("Ошибка при получении цитаты:", error);
+          document.getElementById("quote").textContent =
+            "Не удалось загрузить цитату";
+        }
+      }
+      async function getStathamImage() {
+        try {
+          const response = await fetch("http://127.0.0.1:10002/statham/img_url", {
+            method: "GET",
             headers: {
-                'Content-Type': 'application/json'
+              accept: "application/json",
             },
-            body: JSON.stringify({
-                query: `
+          });
+
+          if (!response.ok) {
+            throw new Error(`Ошибка HTTP: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          const imageContainer = document.getElementById("image-container");
+          
+          // Очищаем контейнер перед добавлением новой картинки
+          imageContainer.innerHTML = '';
+          
+          // Создаем элемент img и устанавливаем src из ответа
+          const img = document.createElement('img');
+          img.src = data.message;
+          img.alt = "Jason Statham";
+          
+          // Добавляем картинку в контейнер
+          imageContainer.appendChild(img);
+          
+        } catch (error) {
+          console.error("Ошибка при получении картинки:", error);
+          document.getElementById("image-container").textContent =
+            "Не удалось загрузить картинку";
+        }
+      }
+      async function loadProducts() {
+        const response = await fetch("http://localhost:10001/query", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
                     query GetAllProducts {
                         GetAllProducts {
                             name
@@ -105,20 +218,20 @@
                             category
                         }
                     }
-                `
-            })
+                `,
+          }),
         });
 
         const result = await response.json();
         const products = result.data.GetAllProducts; // Извлекаем массив из GraphQL-ответа
 
-        const list = document.getElementById('product-list');
-        list.innerHTML = '';
+        const list = document.getElementById("product-list");
+        list.innerHTML = "";
 
         products.forEach((product, index) => {
-            const item = document.createElement('div');
-            item.classList.add('product');
-            item.innerHTML = `
+          const item = document.createElement("div");
+          item.classList.add("product");
+          item.innerHTML = `
         <div class="name">${product.name}</div>
         <div class="price">${product.price.toFixed(2)} ₽</div>
         <button class="toggle-btn" onclick="toggleDetails(${index})">Развернуть</button>
@@ -126,47 +239,51 @@
             <div>Категория: ${product.category}</div>
         </div>
     `;
-            list.appendChild(item);
+          list.appendChild(item);
         });
-    }
+      }
 
-    loadProducts();
+      loadProducts();
 
-    function toggleDetails(index) {
+      function toggleDetails(index) {
         const details = document.getElementById(`details-${index}`);
         if (details.style.display === "none" || details.style.display === "") {
-            details.style.display = "block";
+          details.style.display = "block";
         } else {
-            details.style.display = "none";
+          details.style.display = "none";
         }
-    }
+      }
 
-    // WebSocket
-    let userId = prompt("Введите ваш ID (например, 1, 2, 3):", "1");
-    if (!userId) userId = "гость";
+      // WebSocket
+      let userId = prompt("Введите ваш ID (например, 1, 2, 3):", "1");
+      if (!userId) userId = "гость";
 
-    const socket = new WebSocket(`http://localhost:10003/ws?id=${userId}`);
+      const socket = new WebSocket(`http://localhost:10003/ws?id=${userId}`);
 
-    socket.onmessage = function(event) {
+      socket.onmessage = function (event) {
         const messages = document.getElementById("messages");
         const data = JSON.parse(event.data);
 
         const message = document.createElement("div");
         message.classList.add("message");
-        message.classList.add(data.sender.startsWith("пользователь") ? "user-message" : "admin-message");
+        message.classList.add(
+          data.sender.startsWith("пользователь")
+            ? "user-message"
+            : "admin-message"
+        );
         message.innerHTML = `<strong>${data.sender}:</strong> ${data.message}`;
 
         messages.appendChild(message);
         messages.scrollTop = messages.scrollHeight;
-    };
+      };
 
-    function sendMessage() {
+      function sendMessage() {
         const input = document.getElementById("message-input");
         if (input.value.trim() !== "") {
-            socket.send(input.value);
-            input.value = "";
+          socket.send(input.value);
+          input.value = "";
         }
-    }
-</script>
-</body>
+      }
+    </script>
+  </body>
 </html>
