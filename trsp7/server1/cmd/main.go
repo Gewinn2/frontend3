@@ -49,7 +49,7 @@ func main() {
 		})
 
 		middleware := cors.New(cors.Options{
-			AllowedOrigins:   []string{"http://127.0.0.1:3000"}, // Разрешаем запросы с фронтенда
+			AllowedOrigins:   []string{"http://127.0.0.1:3000"},
 			AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
 			AllowedHeaders:   []string{"Content-Type", "Authorization"},
 			AllowCredentials: true,

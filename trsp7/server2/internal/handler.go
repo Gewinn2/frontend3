@@ -3,6 +3,7 @@ package internal
 import (
 	"database/sql"
 	_ "frontend3_server2/docs"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"math/rand"
 	"strconv"
 
@@ -17,6 +18,13 @@ type Handler struct {
 
 func (h *Handler) InitRoutes() {
 	app := fiber.New()
+
+	app.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowHeaders: "Origin, Content-Type, Accept, Authorization",
+		AllowMethods: "GET, HEAD, PUT, PATCH, POST, DELETE",
+	}))
+
 	app.Get("/swagger/*", fiberSwagger.WrapHandler)
 	app.Post("/product", h.CreateProducts)
 	app.Put("/product", h.UpdateProduct)
